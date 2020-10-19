@@ -1,3 +1,5 @@
+This is Tobias Rausch's ATACseq pipeline modified to run on our system, his relevant work should be cited (citation info at end).
+
 ATAC-Seq Pipeline Installation
 ------------------------------
 
