@@ -27,16 +27,32 @@ HG=${4}
 OUTP=${5}
 
 # Align
-${BASEDIR}/align.sh ${ATYPE} ${FQ1} ${FQ2} ${HG} ${OUTP}
+#${BASEDIR}/align.sh ${ATYPE} ${FQ1} ${FQ2} ${HG} ${OUTP}
 
+if [ ! -f ${OUTP}.final.bam ]; then
+  ${BASEDIR}/align.sh ${ATYPE} ${FQ1} ${FQ2} ${HG} ${OUTP}
+  #echo ${OUTP}.final.bam not found from alignment step! exit
+  #exit 1
+else
+  echo ${OUTP}.final.bam found! skipping alignment.
+fi
+#exit 0
 # Generate pseudo-replicates
-${BASEDIR}/pseudorep.sh ${OUTP}.final.bam ${OUTP}
+if [ ! -f ${OUTP}.pseudorep1.bam ] || [ ! -f ${OUTP}.pseudorep2.bam ]; then
+  ${BASEDIR}/pseudorep.sh ${OUTP}.final.bam ${OUTP}
+else
+  echo ${OUTP}.pseudorep1.bam and ${OUTP}.pseudorep2.bam found! skipping generate pseudoreps.
+fi
 
 # Call peaks and filter using IDR (replace pseudo-replicates with true biological replicates if available)
-${BASEDIR}/peaks.sh ${OUTP}.pseudorep1.bam ${OUTP}.pseudorep2.bam ${HG} ${OUTP}
+if [ ! -f ${OUTP}.peaks ]; then
+  ${BASEDIR}/peaks.sh ${OUTP}.pseudorep1.bam ${OUTP}.pseudorep2.bam ${HG} ${OUTP}
+else
+  echo ${OUTP}.peaks found! skipping peaks/IDR.
+fi
 
 # Delete pseudo-replicates
-rm ${OUTP}.pseudorep1.bam ${OUTP}.pseudorep1.bam.bai ${OUTP}.pseudorep2.bam ${OUTP}.pseudorep2.bam.bai
+#rm ${OUTP}.pseudorep1.bam ${OUTP}.pseudorep1.bam.bai ${OUTP}.pseudorep2.bam ${OUTP}.pseudorep2.bam.bai
 
 # Footprints
 ${BASEDIR}/footprints.sh ${ATYPE} ${HG} ${OUTP}.final.bam ${OUTP}

@@ -13,7 +13,8 @@ BASEDIR=$(dirname "$SCRIPT")
 
 # Activate environment
 export PATH=${BASEDIR}/../bin/bin:${PATH}
-source activate ${BASEDIR}/../bin/envs/atac2
+conda deactivate
+conda activate ${BASEDIR}/../bin/envs/atac2
 
 # CMD parameters
 PEAKS=${1}
@@ -28,4 +29,4 @@ makeTagDirectory ${OUTP}/tagdir -genome ${HG} -checkGC ${ALIGN} 2> ${OUTP}.homer
 annotatePeaks.pl ${PEAKS} hg19 -size given -annStats ${OUTP}.homer.annStats -d ${OUTP}/tagdir > ${OUTP}.annotated.normalized 2>> ${OUTP}.homer.log
 
 # Deactivate environment
-source deactivate
+conda deactivate

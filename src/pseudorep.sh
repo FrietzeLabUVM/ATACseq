@@ -13,7 +13,8 @@ BASEDIR=$(dirname "$SCRIPT")
 
 # Activate environment
 export PATH=${BASEDIR}/../bin/bin:${PATH}
-source activate ${BASEDIR}/../bin/envs/atac
+conda deactivate
+conda activate ${BASEDIR}/../bin/envs/atac
 
 # Custom parameters
 THREADS=4
@@ -22,8 +23,11 @@ THREADS=4
 INP=${1}
 OUTP=${2}
 
+echo $PATH
+which samtools
+
 # Only keep proper paired-ends
-samtools sort -@ ${THREADS} -o ${OUTP}.namesort.bam -n ${INP}
+samtools sort -@ ${THREADS} -o ${OUTP}.namesort.bam -n ${INP} -m 1G
 samtools fixmate -@ ${THREADS} -r ${OUTP}.namesort.bam ${OUTP}.fixmate.bam
 rm ${OUTP}.namesort.bam
 
@@ -48,4 +52,4 @@ rm ${OUTP}.rep2.bam
 rm ${OUTP}.rep00 ${OUTP}.rep01
 
 # Deactivate environment
-source deactivate
+conda deactivate

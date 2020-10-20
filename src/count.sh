@@ -13,7 +13,7 @@ BASEDIR=$(dirname "$SCRIPT")
 
 # Activate environment
 export PATH=${BASEDIR}/../bin/bin:${PATH}
-source activate ${BASEDIR}/../bin/envs/atac
+conda activate ${BASEDIR}/../bin/envs/atac
 
 # CMD parameters
 ATYPE=${1}
@@ -98,4 +98,4 @@ bedtools intersect -v -wa -a <(zcat ${OP}.counts.gz | tail -n +2) -b <(zcat ${BA
 gzip ${OP}.tss.counts ${OP}.notss.counts
 
 # Deactivate environment
-source deactivate
+conda deactivate

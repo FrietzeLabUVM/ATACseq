@@ -13,7 +13,7 @@ BASEDIR=$(dirname "$SCRIPT")
 
 # Activate environment
 export PATH=${BASEDIR}/../bin/bin:${PATH}
-source activate ${BASEDIR}/../bin/envs/atac
+conda activate ${BASEDIR}/../bin/envs/atac
 
 # Custom parameters
 THREADS=4
@@ -29,8 +29,8 @@ alfred tracks -c 2 -o ${OUTP}.footprint.bedGraph.gz ${BAM}
 igvtools totdf ${OUTP}.footprint.bedGraph.gz ${OUTP}.footprint.tdf hg19
 
 # call peaks on bedGraph
-source deactivate
-source activate ${BASEDIR}/../bin/envs/atac2
+conda deactivate
+conda activate ${BASEDIR}/../bin/envs/atac2
 
 # Find suitable cutoff for > 10,000 peaks
 macs2 bdgpeakcall --cutoff-analysis -g 75 -l 50 -i <(zcat ${OUTP}.footprint.bedGraph.gz) -o ${OUTP}.footprints_narrowPeak
@@ -48,10 +48,12 @@ macs2 bdgpeakcall -c ${CUTOFF} -g 75 -l 50 -i <(zcat ${OUTP}.footprint.bedGraph.
 # Get rid of the track line
 tail -n +2 ${OUTP}.footprints_narrowPeak > ${OUTP}.footprints
 
+conda activate ${BASEDIR}/../bin/envs/atac
+conda deactivate
 # Annotate motifs in footprints
 if [[ ${ATYPE} = *"hg"* ]]
 then
-    alfred annotate -m ${BASEDIR}/../motif/jaspar.gz -r ${HG} -o ${OUTP}.footprints.motifs -u ${OUTP}.motifs.footprints ${OUTP}.footprints
+    alfred annotate -m ${BASEDIR}/../motif/jaspar.gz -r ${HG}.fa -o ${OUTP}.footprints.motifs -u ${OUTP}.motifs.footprints ${OUTP}.footprints
 fi
 
-source deactivate
+conda deactivate

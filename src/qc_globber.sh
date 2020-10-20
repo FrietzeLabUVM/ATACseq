@@ -16,10 +16,11 @@ OUTP=${1}
 
 # Activate environment
 export PATH=${BASEDIR}/../bin/bin:${PATH}
-source activate ${BASEDIR}/../bin/envs/atac
+conda deactivate
+conda activate ${BASEDIR}/../bin/envs/atac
 
 # Collect QC information
 ${BASEDIR}/qc_globber.py -p ${OUTP} > ${OUTP}.key.metrics
 
 # Deactivate environment
-source deactivate
+conda deactivate

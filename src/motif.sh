@@ -13,7 +13,8 @@ BASEDIR=$(dirname "$SCRIPT")
 
 # Activate environment
 export PATH=${BASEDIR}/../bin/bin:${PATH}
-source activate ${BASEDIR}/../bin/envs/atac2
+conda deactivate
+conda activate ${BASEDIR}/../bin/envs/atac2
 
 # CMD parameters
 ATYPE=${1}
@@ -29,4 +30,4 @@ findMotifsGenome.pl ${PEAKS} ${ATYPE} ${OUTP}_motifs/ -size 50 -mask
 
 
 # Deactivate environment
-source deactivate
+conda deactivate

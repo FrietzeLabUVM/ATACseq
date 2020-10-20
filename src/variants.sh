@@ -13,7 +13,8 @@ BASEDIR=$(dirname "$SCRIPT")
 
 # Activate environment
 export PATH=${BASEDIR}/../bin/bin:${PATH}
-source activate ${BASEDIR}/../bin/envs/atac
+conda deactivate
+conda activate ${BASEDIR}/../bin/envs/atac
 
 # CMD parameters
 GENOME=${1}
@@ -39,4 +40,4 @@ tabix ${OUTP}.norm.filtered.vcf.gz
 rm ${OUTP}.norm.vcf.gz ${OUTP}.norm.vcf.gz.tbi
 
 # Deactivate environment
-source deactivate
+conda deactivate
