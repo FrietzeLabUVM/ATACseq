@@ -22,7 +22,7 @@ OUTP=${2}
 shift 2
 
 # Freebayes
-freebayes --no-partial-observations --min-repeat-entropy 1 --report-genotype-likelihood-max --min-alternate-fraction 0.15 --fasta-reference ${GENOME} --genotype-qualities $@ -v ${OUTP}.vcf
+freebayes --no-partial-observations --min-repeat-entropy 1 --report-genotype-likelihood-max --min-alternate-fraction 0.15 --fasta-reference ${GENOME}.fa --genotype-qualities $@ -v ${OUTP}.vcf
 cat ${OUTP}.vcf | grep "^#" > ${OUTP}.vcf.tmp
 cat ${OUTP}.vcf| grep -v "^#" | sort -k1,1V -k2,2n >> ${OUTP}.vcf.tmp
 mv ${OUTP}.vcf.tmp ${OUTP}.vcf
@@ -30,7 +30,7 @@ bgzip ${OUTP}.vcf
 tabix ${OUTP}.vcf.gz
 
 # Normalize VCF
-bcftools norm -O z -o ${OUTP}.norm.vcf.gz -f ${GENOME} -m -both ${OUTP}.vcf.gz
+bcftools norm -O z -o ${OUTP}.norm.vcf.gz -f ${GENOME}.fa -m -both ${OUTP}.vcf.gz
 tabix ${OUTP}.norm.vcf.gz
 rm ${OUTP}.vcf.gz ${OUTP}.vcf.gz.tbi
 

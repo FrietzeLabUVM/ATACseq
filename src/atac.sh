@@ -26,9 +26,17 @@ FQ2=${3}
 HG=${4}
 OUTP=${5}
 
+CONDA_BASE=$(conda info --base)
+echo $CONDA_BASE
+source $CONDA_BASE/etc/profile.d/conda.sh
+export -f conda
+export -f __conda_activate
+export -f __conda_reactivate
+export -f __conda_hashr
+export -f __add_sys_prefix_to_path
+
 # Align
 #${BASEDIR}/align.sh ${ATYPE} ${FQ1} ${FQ2} ${HG} ${OUTP}
-
 if [ ! -f ${OUTP}.final.bam ]; then
   ${BASEDIR}/align.sh ${ATYPE} ${FQ1} ${FQ2} ${HG} ${OUTP}
   #echo ${OUTP}.final.bam not found from alignment step! exit

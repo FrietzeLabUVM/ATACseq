@@ -48,8 +48,8 @@ macs2 bdgpeakcall -c ${CUTOFF} -g 75 -l 50 -i <(zcat ${OUTP}.footprint.bedGraph.
 # Get rid of the track line
 tail -n +2 ${OUTP}.footprints_narrowPeak > ${OUTP}.footprints
 
-conda activate ${BASEDIR}/../bin/envs/atac
 conda deactivate
+conda activate ${BASEDIR}/../bin/envs/atac
 # Annotate motifs in footprints
 if [[ ${ATYPE} = *"hg"* ]]
 then
