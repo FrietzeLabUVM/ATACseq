@@ -3,7 +3,7 @@
 if [ $# -lt 4 ]
 then
     echo ""
-    echo "Usage: $0 <hg19|mm10> <peak.file.lst> <bam.file.lst> <output prefix> [PEAKS|FOOTPRINTS]"
+    echo "Usage: $0 <hg38|hg19|mm10> <peak.file.lst> <bam.file.lst> <output prefix> [PEAKS|FOOTPRINTS]"
     echo ""
     exit -1
 fi

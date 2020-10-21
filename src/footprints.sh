@@ -3,7 +3,7 @@
 if [ $# -ne 4 ]
 then
     echo ""
-    echo "Usage: $0 <hg19|mm10> <genome.fa> <input.bam> <output prefix>"
+    echo "Usage: $0 <hg38|hg19|mm10> <genome.fa> <input.bam> <output prefix>"
     echo ""
     exit -1
 fi
@@ -26,7 +26,7 @@ OUTP=${4}
 
 # Call footprints
 alfred tracks -c 2 -o ${OUTP}.footprint.bedGraph.gz ${BAM}
-igvtools totdf ${OUTP}.footprint.bedGraph.gz ${OUTP}.footprint.tdf hg19
+igvtools totdf ${OUTP}.footprint.bedGraph.gz ${OUTP}.footprint.tdf ${ATYPE}
 
 # call peaks on bedGraph
 conda deactivate

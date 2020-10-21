@@ -21,12 +21,13 @@ PEAKS=${1}
 ALIGN=${2}
 HG=${3}
 OUTP=${4}
+ATYPE=${5}
 
 # create tag directory (should we use normGC? only unique, keepOne?)
-makeTagDirectory ${OUTP}/tagdir -genome ${HG} -checkGC ${ALIGN} 2> ${OUTP}.homer.log
+makeTagDirectory ${OUTP}/tagdir -genome ${HG}.fa -checkGC ${ALIGN} 2> ${OUTP}.homer.log
 
 # Annotated and normalized peaks
-annotatePeaks.pl ${PEAKS} hg19 -size given -annStats ${OUTP}.homer.annStats -d ${OUTP}/tagdir > ${OUTP}.annotated.normalized 2>> ${OUTP}.homer.log
+annotatePeaks.pl ${PEAKS} ${ATYPE} -size given -annStats ${OUTP}.homer.annStats -d ${OUTP}/tagdir > ${OUTP}.annotated.normalized 2>> ${OUTP}.homer.log
 
 # Deactivate environment
 conda deactivate

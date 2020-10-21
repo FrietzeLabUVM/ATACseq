@@ -24,6 +24,7 @@ REP1=${1}
 REP2=${2}
 HG=${3}
 OUTP=${4}
+ATYPE=${5}
 
 # Merge BAMs
 samtools merge -@ ${THREADS} ${OUTP}.merge.bam ${REP1} ${REP2}
@@ -80,7 +81,7 @@ echo -e "totpeaks\tfrip\tsigpeaks\trep1\trep2\trecallRep1\trecallRep2" > ${OUTP}
 echo -e "${PKTOTAL}\t${FRACPEAK1},${FRACPEAK2}\t${SIGTOTAL}\t${RECALLREP1}\t${RECALLREP2}\t${FRACREP1}\t${FRACREP2}" >> ${OUTP}.peaks.log
 
 # Create UCSC track
-echo "track type=narrowPeak visibility=3 db=hg19 name=\"${OUTP}\" description=\"${OUTP} narrowPeaks\"" | gzip -cf > ${OUTP}.narrowPeak.ucsc.bed.gz
+echo "track type=narrowPeak visibility=3 db=${ATYPE} name=\"${OUTP}\" description=\"${OUTP} narrowPeaks\"" | gzip -cf > ${OUTP}.narrowPeak.ucsc.bed.gz
 echo "browser position chr12:125400362-125403757" | gzip -cf >> ${OUTP}.narrowPeak.ucsc.bed.gz
 cat ${OUTP}.peaks | gzip -cf >> ${OUTP}.narrowPeak.ucsc.bed.gz
 

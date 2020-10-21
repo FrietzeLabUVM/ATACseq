@@ -3,7 +3,7 @@
 if [ $# -ne 5 ]
 then
     echo ""
-    echo "Usage: $0 <hg19|mm10> <read1.fq.gz> <read2.fq.gz> <genome.fa> <output prefix>"
+    echo "Usage: $0 <hg38|g19|mm10> <read1.fq.gz> <read2.fq.gz> <genome.fa> <output prefix>"
     echo ""
     exit -1
 fi
@@ -92,7 +92,7 @@ if [ ! -f ${OUTP}.flagstat ]; then samtools flagstat -@ ${THREADS} ${OUTP}.rmdup
 
 # Run stats on unfiltered BAM
 if [ ! -f ${OUTP}.bamStats.unfiltered.tsv.gz ]; then
-  alfred qc -b ${BASEDIR}/../bed/hg19.promoter.bed.gz -r ${HG}.fa -o ${OUTP}.bamStats.unfiltered.tsv.gz -j ${OUTP}.bamStats.unfiltered.json.gz ${OUTP}.rmdup.bam
+  alfred qc -b ${BASEDIR}/../bed/${ATYPE}.promoter.bed.gz -r ${HG}.fa -o ${OUTP}.bamStats.unfiltered.tsv.gz -j ${OUTP}.bamStats.unfiltered.json.gz ${OUTP}.rmdup.bam
 else
   echo ${OUTP}.bamStats.unfiltered.tsv.gz found, assuming alfread qc unfiltered succeeded. Delete to rerun.
 fi
@@ -109,7 +109,7 @@ fi
 
 # Run stats using filtered BAM using promoter regions
 if [ ! -f ${OUTP}.bamStats.promoters.tsv.gz ]; then
-  alfred qc -b ${BASEDIR}/../bed/hg19.promoter.bed.gz -r ${HG}.fa -o ${OUTP}.bamStats.promoters.tsv.gz -j ${OUTP}.bamStats.promoters.json.gz ${OUTP}.final.bam
+  alfred qc -b ${BASEDIR}/../bed/${ATYPE}.promoter.bed.gz -r ${HG}.fa -o ${OUTP}.bamStats.promoters.tsv.gz -j ${OUTP}.bamStats.promoters.json.gz ${OUTP}.final.bam
 else
   echo ${OUTP}.bamStats.promoters.tsv.gz found, assuming alfread qc unfiltered succeeded. Delete to rerun.
 fi

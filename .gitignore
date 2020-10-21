@@ -44,7 +44,7 @@ Miniconda3-latest-Linux-x86_64.sh.1
 Miniconda3-latest-Linux-x86_64.sh.2
 hs_err_pid33748.log
 igv.log
-output_MCF10A_progression/
+output_*
 
 tmp*
 *.sh.*
