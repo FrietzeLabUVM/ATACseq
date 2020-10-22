@@ -32,12 +32,12 @@ tabix ${OUTP}.vcf.gz
 # Normalize VCF
 bcftools norm -O z -o ${OUTP}.norm.vcf.gz -f ${GENOME}.fa -m -both ${OUTP}.vcf.gz
 tabix ${OUTP}.norm.vcf.gz
-rm ${OUTP}.vcf.gz ${OUTP}.vcf.gz.tbi
+#rm ${OUTP}.vcf.gz ${OUTP}.vcf.gz.tbi
 
 # Filter VCF
 bcftools filter -O z -o ${OUTP}.norm.filtered.vcf.gz -e '%QUAL<=20 || %QUAL/INFO/AO<=2 || SAF<=2 || SAR<=2' ${OUTP}.norm.vcf.gz
 tabix ${OUTP}.norm.filtered.vcf.gz
-rm ${OUTP}.norm.vcf.gz ${OUTP}.norm.vcf.gz.tbi
+#rm ${OUTP}.norm.vcf.gz ${OUTP}.norm.vcf.gz.tbi
 
 # Deactivate environment
 conda deactivate

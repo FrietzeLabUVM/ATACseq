@@ -36,12 +36,15 @@ export -f __conda_reactivate
 export -f __conda_hashr
 export -f __add_sys_prefix_to_path
 
+echo STEP1 - align
 # Align
 if [ ! -f ${OUTP}.final.bam ]; then
   ${BASEDIR}/align.sh ${ATYPE} ${FQ1} ${FQ2} ${HG} ${OUTP}
 else
   echo ${OUTP}.final.bam found! skipping alignment.
 fi
+
+echo STEP2 - pseudo reps
 # Generate pseudo-replicates
 if [ ! -f ${OUTP}.pseudorep1.bam ] || [ ! -f ${OUTP}.pseudorep2.bam ]; then
   ${BASEDIR}/pseudorep.sh ${OUTP}.final.bam ${OUTP}
@@ -49,6 +52,7 @@ else
   echo ${OUTP}.pseudorep1.bam and ${OUTP}.pseudorep2.bam found! skipping generate pseudoreps.
 fi
 
+echo STEP3 - peaks
 # Call peaks and filter using IDR (replace pseudo-replicates with true biological replicates if available)
 if [ ! -f ${OUTP}.peaks ]; then
   ${BASEDIR}/peaks.sh ${OUTP}.pseudorep1.bam ${OUTP}.pseudorep2.bam ${HG} ${OUTP} ${ATYPE}
@@ -60,22 +64,39 @@ fi
 #rm ${OUTP}.pseudorep1.bam ${OUTP}.pseudorep1.bam.bai ${OUTP}.pseudorep2.bam ${OUTP}.pseudorep2.bam.bai
 
 # Footprints
-${BASEDIR}/footprints.sh ${ATYPE} ${HG} ${OUTP}.final.bam ${OUTP}
+echo STEP 4 - footprints
+if [ ! -f ${OUTP}.footprints.motifs ]; then
+  ${BASEDIR}/footprints.sh ${ATYPE} ${HG} ${OUTP}.final.bam ${OUTP}
+else
+  echo ${OUTP}.footprints.motifs found! skipping footprints.
+fi
 
+echo STEP 5 - qc metrics
 # Aggregate key QC metrics
-${BASEDIR}/qc_globber.sh ${OUTP}
+if [ ! -f ${OUTP}.key.metrics ]; then
+  ${BASEDIR}/qc_globber.sh ${OUTP}
+else
+  echo ${OUTP}.key.metrics found! skipping qc metrics.
+fi
 
 # Variant calling
-${BASEDIR}/variants.sh ${HG} ${OUTP} ${OUTP}.final.bam
+echo STEP 6 - variant calling
+if [ ! -f ${OUTP}.norm.filtered.vcf.gz ]; then 
+  ${BASEDIR}/variants.sh ${HG} ${OUTP} ${OUTP}.final.bam
+else
+  echo ${OUTP}.norm.filtered.vcf.gz found! skipping variant calling.
+fi
 
+# Annotate peaks
+echo STEP 7 - annotate peaks
 if [ ! -s  ${OUTP}.annotated.normalized ]; then
-  # Annotate peaks
   ${BASEDIR}/homer.sh ${OUTP}.peaks ${OUTP}.final.bam ${HG} ${OUTP} ${ATYPE}
 else
   echo ${OUTP}.annotated.normalized found! skipping homer.
 fi
 
 # Motif discovery
+echo STEP 8 - motifs
 if [ ! -d ${OUTP}_motifs ]; then
   ${BASEDIR}/motif.sh ${ATYPE} ${OUTP}.peaks ${OUTP}
 else

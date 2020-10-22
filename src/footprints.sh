@@ -51,9 +51,9 @@ tail -n +2 ${OUTP}.footprints_narrowPeak > ${OUTP}.footprints
 conda deactivate
 conda activate ${BASEDIR}/../bin/envs/atac
 # Annotate motifs in footprints
-if [[ ${ATYPE} = *"hg"* ]]
-then
+#if [[ ${ATYPE} = *"hg"* ]]
+#then
     alfred annotate -m ${BASEDIR}/../motif/jaspar.gz -r ${HG}.fa -o ${OUTP}.footprints.motifs -u ${OUTP}.motifs.footprints ${OUTP}.footprints
-fi
+#fi
 
 conda deactivate

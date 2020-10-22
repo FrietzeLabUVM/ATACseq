@@ -1,9 +1,9 @@
 #!/bin/bash
 
-if [ $# -ne 4 ]
+if [ $# -ne 5 ]
 then
     echo ""
-    echo "Usage: $0 <peaks.tsv> <align.bam> <genome.fa> <output prefix>"
+    echo "Usage: $0 <peaks.tsv> <align.bam> <genome.fa> <output prefix> <geome id>"
     echo ""
     exit -1
 fi

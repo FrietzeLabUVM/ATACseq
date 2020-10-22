@@ -1,9 +1,9 @@
 #!/bin/bash
 
-if [ $# -ne 4 ]
+if [ $# -ne 5 ]
 then
     echo ""
-    echo "Usage: $0 <replicate1.bam> <replicate2.bam> <genome.fa> <output prefix>"
+    echo "Usage: $0 <replicate1.bam> <replicate2.bam> <genome.fa> <output prefix> <genome id>"
     echo ""
     exit -1
 fi
