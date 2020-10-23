@@ -9,14 +9,24 @@ ATAC-Seq Pipeline Installation
 
 `make all`
 
+Miscellaneous installs
+
 `conda install -c bioconda ucsc-bedgraphtobigwig -p bin/envs/atac2`
+
 `conda install -c bioconda ucsc-bedtobigbed -p bin/envs/atac2`
- 
+
+A few R packages are required/
+
 `conda activate bin/envs/atac2`
+
 `R --no-init-file -e "install.packages('BiocManager', repos='http://cran.rstudio.com/')"`
+
 `R --no-init-file -e "BiocManager::install('DESeq2')"`
+
 `R --no-init-file -e "BiocManager::install('vsn')"`
+
 `R --no-init-file -e "BiocManager::install('pheatmap')"`
+
 `conda deactivate`
  
 If one of the above commands fail your operating system probably lacks some build essentials. These are usually pre-installed but if you lack them you need to install these. For instance, for Ubuntu this would require:
