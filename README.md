@@ -15,7 +15,7 @@ Miscellaneous installs
 
 `conda install -c bioconda ucsc-bedtobigbed -p bin/envs/atac2`
 
-A few R packages are required/
+A few R packages are required
 
 `conda activate bin/envs/atac2`
 
