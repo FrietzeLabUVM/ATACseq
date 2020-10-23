@@ -19,6 +19,10 @@ fi
 #SCRIPT=$(readlink -f "$0")
 #BASEDIR=$(dirname "$SCRIPT")
 BASEDIR=$(pwd)/src
+if [ ! -d $BASEDIR ]; then
+  echo $BASEDIR not found, run script from ATAC-Seq pipeline location
+  exit 1
+fi
 
 # CMD parameters
 ATYPE=${1}
@@ -103,7 +107,7 @@ else
   echo ${OUTP}_motifs directory found! skipping motifs.
 fi
 
-echo STEP 9 - bigwigs abd bigbedgs
+echo STEP 9 - bigwigs abd bigbeds
 for f in ${OUTP}.bedGraph.gz ${OUTP}.footprint.bedGraph.gz; do
   bash ${BASEDIR}/bedgraphgz_to_bigwig.sh ${ATYPE} $f .bedGraph.gz
 done

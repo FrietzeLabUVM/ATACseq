@@ -62,7 +62,7 @@ FRACREP2=`echo "${RECALLREP2} / ${SIGTOTAL}" | bc -l`
 IDRTHRES=0.1
 idr --samples ${REP1}.suf_peaks.narrowPeak ${REP2}.suf_peaks.narrowPeak --peak-list ${OUTP}.merge.bam.suf_peaks.narrowPeak --input-file-type narrowPeak --rank p.value --output-file ${OUTP}.idr --soft-idr-threshold ${IDRTHRES} --plot --use-best-multisummit-IDR --log-output-file ${OUTP}.idr.log
 IDRCUT=`echo "-l(${IDRTHRES})/l(10)" | bc -l`
-cat ${OUTP}.merge.bam.suf_peaks.narrowPeak | grep -w -Ff <(cat ${OUTP}.idr | awk '$12>='"${IDRCUT}"'' | cut -f 1-3) > ${OUTP}.peaks 
+cat ${OUTP}.merge.bam.suf_peaks.narrowPeak | grep -w -Ff <(cat ${OUTP}.idr | awk '$12>='"${IDRCUT}"'' | cut -f 1-3) > ${OUTP}.final.peaks 
 rm ${REP1}.suf_peaks.narrowPeak ${REP2}.suf_peaks.narrowPeak
 mv ${OUTP}.merge.bam.suf_peaks.narrowPeak ${OUTP}.unfiltered.peaks
 gzip -f ${OUTP}.unfiltered.peaks
@@ -77,13 +77,13 @@ FRACPEAK2=`zgrep "^ME" ${OUTP}.bamStats.peaks.tsv.gz  | datamash transpose | gre
 #rm ${OUTP}.merge.bam ${OUTP}.merge.bam.bai ${OUTP}.bamStats.peaks.tsv.gz
 
 # Summarize peak statistics
-echo -e "totpeaks\tfrip\tsigpeaks\trep1\trep2\trecallRep1\trecallRep2" > ${OUTP}.peaks.log
-echo -e "${PKTOTAL}\t${FRACPEAK1},${FRACPEAK2}\t${SIGTOTAL}\t${RECALLREP1}\t${RECALLREP2}\t${FRACREP1}\t${FRACREP2}" >> ${OUTP}.peaks.log
+echo -e "totpeaks\tfrip\tsigpeaks\trep1\trep2\trecallRep1\trecallRep2" > ${OUTP}.final.peaks.log
+echo -e "${PKTOTAL}\t${FRACPEAK1},${FRACPEAK2}\t${SIGTOTAL}\t${RECALLREP1}\t${RECALLREP2}\t${FRACREP1}\t${FRACREP2}" >> ${OUTP}.final.peaks.log
 
 # Create UCSC track
 echo "track type=narrowPeak visibility=3 db=${ATYPE} name=\"${OUTP}\" description=\"${OUTP} narrowPeaks\"" | gzip -cf > ${OUTP}.narrowPeak.ucsc.bed.gz
 echo "browser position chr12:125400362-125403757" | gzip -cf >> ${OUTP}.narrowPeak.ucsc.bed.gz
-cat ${OUTP}.peaks | gzip -cf >> ${OUTP}.narrowPeak.ucsc.bed.gz
+cat ${OUTP}.final.peaks | gzip -cf >> ${OUTP}.narrowPeak.ucsc.bed.gz
 
 # Deactivate environment
 conda deactivate

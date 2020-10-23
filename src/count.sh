@@ -11,6 +11,17 @@ fi
 SCRIPT=$(readlink -f "$0")
 BASEDIR=$(dirname "$SCRIPT")
 
+#bash $BASEDIR/init_bash_conda.sh
+CONDA_BASE=$(conda info --base)
+echo $CONDA_BASE
+source $CONDA_BASE/etc/profile.d/conda.sh
+export -f conda
+export -f __conda_activate
+export -f __conda_reactivate
+export -f __conda_hashr
+export -f __add_sys_prefix_to_path
+
+
 # Activate environment
 export PATH=${BASEDIR}/../bin/bin:${PATH}
 conda activate ${BASEDIR}/../bin/envs/atac
@@ -44,11 +55,11 @@ do
 done
 
 # Cluster peaks
-bedtools merge -i <(sort -k1,1V -k2,2n ${OP}.concat.peaks) | awk '{print $0"\tPeak"sprintf("%08d", NR);}' | gzip -c > ${OP}.clustered.peaks.gz
+bedtools merge -i <(sort -k1,1V -k2,2n ${OP}.concat.peaks) | awk '{print $0"\tPeak"sprintf("%08d", NR);}' | gzip -fc > ${OP}.clustered.peaks.gz
 rm ${OP}.concat.peaks
 
 # Remove blacklisted regions
-bedtools intersect -v -a <(zcat ${OP}.clustered.peaks.gz) -b <(zcat ${BASEDIR}/../bed/wgEncodeDacMapabilityConsensusExcludable.bed.gz) | sort -k1,1V -k2,2n | uniq | grep -v "^Y" | grep -v "chrY" | gzip -c > ${OP}.clustered.peaks.gz.tmp
+bedtools intersect -v -a <(zcat ${OP}.clustered.peaks.gz) -b <(zcat ${BASEDIR}/../bed/wgEncodeDacMapabilityConsensusExcludable.bed.gz) | sort -k1,1V -k2,2n | uniq | grep -v "^Y" | grep -v "chrY" | gzip -fc > ${OP}.clustered.peaks.gz.tmp
 mv ${OP}.clustered.peaks.gz.tmp ${OP}.clustered.peaks.gz
 
 # Check post-clustered peak width
@@ -88,14 +99,14 @@ do
     fi
     rm ${F}
 done
-gzip ${OP}.counts
+gzip -f ${OP}.counts
 
 # Split counts into TSS peaks and non-TSS peaks
 zcat ${OP}.counts.gz | head -n 1 > ${OP}.tss.counts
 bedtools intersect -wa -a <(zcat ${OP}.counts.gz | tail -n +2) -b <(zcat ${BASEDIR}/../bed/${ATYPE}.promoter.bed.gz) | sort -k1,1V -k2,2n | uniq >> ${OP}.tss.counts
 zcat ${OP}.counts.gz | head -n 1 > ${OP}.notss.counts
 bedtools intersect -v -wa -a <(zcat ${OP}.counts.gz | tail -n +2) -b <(zcat ${BASEDIR}/../bed/${ATYPE}.promoter.bed.gz) | sort -k1,1V -k2,2n | uniq >> ${OP}.notss.counts
-gzip ${OP}.tss.counts ${OP}.notss.counts
+gzip -f ${OP}.tss.counts ${OP}.notss.counts
 
 # Deactivate environment
 conda deactivate

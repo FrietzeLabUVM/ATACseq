@@ -15,9 +15,15 @@ rownames(x) = x$id
 rownames(s) = s$name
 s$condition = factor(s$condition)
 
+if(is.na(args[3])){
+    prefix = "diff"    
+}else{
+    prefix = args[3]
+}
+
 
 # Build DESeq object
-dds = DESeqDataSetFromMatrix(countData = x[,5:ncol(x)], colData = s, design = ~ condition)
+dds = DESeqDataSetFromMatrix(countData = x[,5:ncol(x)][, s$name], colData = s, design = ~ condition)
 print(dds)
 
 # Variance stabilizing transformation
@@ -78,6 +84,10 @@ plotMA(res, ylim = c(-5, 5))
 
 # Significant results
 resSig = subset(res, padj<0.05)
+if(nrow(resSig) < 10){
+    warning("Too few signficant results (<10 under padj<0.05). Outputting top 100.")
+    resSig = res[order(res$pvalue),][1:100,]
+}
 resSig = resSig[order(resSig$pvalue),]
 
 # Heatmap
@@ -85,10 +95,13 @@ mat = assay(dds)[rownames(resSig),]
 mat = mat - rowMeans(mat)
 anno = as.data.frame(colData(dds)[, c("name", "condition")])
 rownames(mat) = NULL
-pheatmap(mat, annotation_col = anno, scale="row")      
+pmap = pheatmap(mat, annotation_col = anno, scale="row")      
+pdf(paste0(prefix, ".res_sig.heatmap.pdf"), width = 7.3, height = 6.5)
+pmap
+dev.off()
 
 # Write results
 resSig = as.data.frame(resSig)
 resSig$id = rownames(resSig)
 resSig = merge(resSig, peaks)
-write.table(resSig, file="res_sig.tsv", col.names=T, row.names=F, quote=F, sep="\t")
+write.table(resSig, file=paste0(prefix, ".res_sig.csv"), col.names=T, row.names=F, quote=F, sep=",")
