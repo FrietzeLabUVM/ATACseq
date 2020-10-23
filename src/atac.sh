@@ -103,7 +103,12 @@ else
   echo ${OUTP}_motifs directory found! skipping motifs.
 fi
 
-echo STEP 9 - bigwigs
+echo STEP 9 - bigwigs abd bigbedgs
 for f in ${OUTP}.bedGraph.gz ${OUTP}.footprint.bedGraph.gz; do
   bash ${BASEDIR}/bedgraphgz_to_bigwig.sh ${ATYPE} $f .bedGraph.gz
 done
+
+for f in ${OUTP}.peaks; do
+  bash ${BASEDIR}/narrowPeak_to_bigbed.sh ${ATYPE} $f ""
+done
+

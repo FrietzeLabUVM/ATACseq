@@ -10,6 +10,7 @@ ATAC-Seq Pipeline Installation
 `make all`
 
 `conda install -c bioconda ucsc-bedgraphtobigwig -p bin/envs/atac2`
+`conda install -c bioconda ucsc-bedtobigbed -p bin/envs/atac2`
 
 If one of the above commands fail your operating system probably lacks some build essentials. These are usually pre-installed but if you lack them you need to install these. For instance, for Ubuntu this would require:
 
