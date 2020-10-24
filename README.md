@@ -13,7 +13,7 @@ A few R packages are required
 
 `conda activate bin/envs/atac2`
 
-`R --no-init-file -e "install.packages('BiocManager', repos='http://cran.rstudio.com/'); BiocManager::install('DESeq2'); BiocManager::install('vsn'); BiocManager::install('pheatmap')"`
+`R --no-init-file -e "install.packages('BiocManager', repos='http://cran.rstudio.com/'); BiocManager::install('GenomicFeatures'); BiocManager::install('DESeq2'); BiocManager::install('vsn'); BiocManager::install('pheatmap'); BiocManager::install("RMariaDB")"`
 
 `conda deactivate`
  
