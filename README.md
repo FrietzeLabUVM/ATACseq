@@ -17,12 +17,18 @@ A few R packages are required
 
 `R --no-init-file -e "install.packages('BiocManager', repos='http://cran.rstudio.com/'); BiocManager::install('GenomicFeatures'); BiocManager::install('DESeq2'); BiocManager::install('vsn'); BiocManager::install('pheatmap'); BiocManager::install("RMariaDB")"`
 
- `fetchChromSizes hg38 > bin/envs/atac/share/igvtools-2.3.93-0/genomes/hg38.chrom.sizes`
+Patches for hg38 support.
+
+`fetchChromSizes hg38 > bin/envs/atac/share/igvtools-2.3.93-0/genomes/hg38.chrom.sizes`
 
 `perl bin/envs/atac2/share/homer-4.9.1-6/.//configureHomer.pl -install hg38`
 
 `conda deactivate`
- 
+
+Pretty sure this shouldn't be necessary, but it is, and I can't fight conda anymore.
+
+`cp bin/envs/atac/lib/libcrypto.so.1.0.0 bin/envs/atac2/lib`
+
 If one of the above commands fail your operating system probably lacks some build essentials. These are usually pre-installed but if you lack them you need to install these. For instance, for Ubuntu this would require:
 
 `apt-get install build-essential g++ git wget unzip`
