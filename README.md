@@ -15,6 +15,8 @@ A few R packages are required
 
 `R --no-init-file -e "install.packages('BiocManager', repos='http://cran.rstudio.com/'); BiocManager::install('GenomicFeatures'); BiocManager::install('DESeq2'); BiocManager::install('vsn'); BiocManager::install('pheatmap'); BiocManager::install("RMariaDB")"`
 
+ `fetchChromSizes hg38 > bin/envs/atac/share/igvtools-2.3.93-0/genomes/hg38.chrom.sizes`
+
 `conda deactivate`
  
 If one of the above commands fail your operating system probably lacks some build essentials. These are usually pre-installed but if you lack them you need to install these. For instance, for Ubuntu this would require:
