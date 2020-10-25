@@ -1,4 +1,6 @@
-This is Tobias Rausch's ATACseq pipeline modified to run on our system, his relevant work should be cited (citation info at end).
+This is Tobias Rausch's ATACseq pipeline modified to run on our system and to support hg38, his relevant work should be cited (citation info at end).
+
+Some misc additions like bigWig generation added too.
 
 ATAC-Seq Pipeline Installation
 ------------------------------
