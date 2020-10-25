@@ -58,7 +58,7 @@ fi
 
 echo STEP3 - peaks
 # Call peaks and filter using IDR (replace pseudo-replicates with true biological replicates if available)
-if [ ! -f ${OUTP}.peaks ]; then
+if [ ! -f ${OUTP}.final.peaks ]; then
   ${BASEDIR}/peaks.sh ${OUTP}.pseudorep1.bam ${OUTP}.pseudorep2.bam ${HG} ${OUTP} ${ATYPE}
 else
   echo ${OUTP}.peaks found! skipping peaks/IDR.
@@ -92,9 +92,9 @@ else
 fi
 
 # Annotate peaks
-echo STEP 7 - annotate peaks
+echo STEP 7 - homer annotate peaks
 if [ ! -s  ${OUTP}.annotated.normalized ]; then
-  ${BASEDIR}/homer.sh ${OUTP}.peaks ${OUTP}.final.bam ${HG} ${OUTP} ${ATYPE}
+  ${BASEDIR}/homer.sh ${OUTP}.final.peaks ${OUTP}.final.bam ${HG} ${OUTP} ${ATYPE}
 else
   echo ${OUTP}.annotated.normalized found! skipping homer.
 fi
@@ -102,17 +102,21 @@ fi
 # Motif discovery
 echo STEP 8 - motifs
 if [ ! -d ${OUTP}_motifs ]; then
-  ${BASEDIR}/motif.sh ${ATYPE} ${OUTP}.peaks ${OUTP}
+  ${BASEDIR}/motif.sh ${ATYPE} ${OUTP}.final.peaks ${OUTP}
 else
   echo ${OUTP}_motifs directory found! skipping motifs.
 fi
 
 echo STEP 9 - bigwigs abd bigbeds
 for f in ${OUTP}.bedGraph.gz ${OUTP}.footprint.bedGraph.gz; do
-  bash ${BASEDIR}/bedgraphgz_to_bigwig.sh ${ATYPE} $f .bedGraph.gz
+  if [ ! -f ${f/bedGraph.gz/bw} ]; then
+    bash ${BASEDIR}/bedgraphgz_to_bigwig.sh ${ATYPE} $f .bedGraph.gz
+  fi
 done
 
-for f in ${OUTP}.peaks; do
-  bash ${BASEDIR}/narrowPeak_to_bigbed.sh ${ATYPE} $f ""
+for f in ${OUTP}.final.peaks; do
+  if [ ! -f ${f}.bb ]; then
+    bash ${BASEDIR}/narrowPeak_to_bigbed.sh ${ATYPE} $f ""
+  fi
 done
 

@@ -26,6 +26,11 @@ HG=${3}
 OUTP=${4}
 ATYPE=${5}
 
+G=hs
+if [ $ATYPE == mm10 ] || [ $ATYPE == mm9 ]; then
+  G=mm
+fi
+
 # Merge BAMs
 samtools merge -@ ${THREADS} ${OUTP}.merge.bam ${REP1} ${REP2}
 samtools index -@ ${THREADS} ${OUTP}.merge.bam
@@ -39,8 +44,8 @@ conda activate ${BASEDIR}/../bin/envs/atac2
 for PEAKBAM in ${OUTP}.merge.bam ${REP1} ${REP2}
 do
     PEAKN=${PEAKBAM}.suf
-    macs2 callpeak -g hs --nomodel --keep-dup all -p 0.01 --shift 0 --extsize ${ISIZE} -n ${PEAKN} -t ${PEAKBAM}
-    #macs2 callpeak -g hs --nomodel --keep-dup all -p 0.01 --shift 0 --extsize ${ISIZE} -n ${PEAKN} -t ${PEAKBAM} -f BAMPE
+    macs2 callpeak -g $G --nomodel --keep-dup all -p 0.01 --shift 0 --extsize ${ISIZE} -n ${PEAKN} -t ${PEAKBAM}
+    #macs2 callpeak -g $G --nomodel --keep-dup all -p 0.01 --shift 0 --extsize ${ISIZE} -n ${PEAKN} -t ${PEAKBAM} -f BAMPE
     rm ${PEAKN}_summits.bed ${PEAKN}_peaks.xls
 done
 conda deactivate
