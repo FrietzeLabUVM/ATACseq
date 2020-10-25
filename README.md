@@ -15,7 +15,7 @@ A few R packages are required
 
 `conda activate bin/envs/atac2`
 
-`R --no-init-file -e "install.packages('BiocManager', repos='http://cran.rstudio.com/'); BiocManager::install('GenomicFeatures'); BiocManager::install('DESeq2'); BiocManager::install('vsn'); BiocManager::install('pheatmap'); BiocManager::install("RMariaDB"); BiocManager::install('corrplot')"`
+`R --no-init-file -e "install.packages('BiocManager', repos='http://cran.rstudio.com/'); BiocManager::install('GenomicFeatures'); BiocManager::install('DESeq2'); BiocManager::install('vsn'); BiocManager::install('pheatmap'); BiocManager::install("RMariaDB"); BiocManager::install('corrplot'); BiocManager::install("hexbin")"`
 
 Patches for hg38 support.
 
