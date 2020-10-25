@@ -17,6 +17,8 @@ A few R packages are required
 
  `fetchChromSizes hg38 > bin/envs/atac/share/igvtools-2.3.93-0/genomes/hg38.chrom.sizes`
 
+`perl bin/envs/atac2/share/homer-4.9.1-6/.//configureHomer.pl -install hg38`
+
 `conda deactivate`
  
 If one of the above commands fail your operating system probably lacks some build essentials. These are usually pre-installed but if you lack them you need to install these. For instance, for Ubuntu this would require:
