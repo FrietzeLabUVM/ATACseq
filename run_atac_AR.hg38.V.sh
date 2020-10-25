@@ -1,12 +1,31 @@
-IDX=/slipstream/galaxy/data/hg38/hg38full/bowtie2_index/hg38full
+IDX=~/data/hg38/hg38canon/bowtie2_index/hg38canon
 GEN=hg38
-BASE=output_MCF10A_progression.hg38
+BASE=output_bcell_lines.hg38.rerun
 mkdir -p $BASE
 
 if [ ! -f ${IDX}.fa ]; then echo need ${IDX}.fa, stop!; exit 1; fi
 if [ ! -f ${IDX}.fa ]; then echo need ${IDX}.1.bt2, stop!; exit 1; fi
 if [ ! -f ${IDX}.fa ]; then echo need ${IDX}.rev.1.bt2, stop!; exit 1; fi
 
+for R1 in input_fastqs/*R1_001.fastq.gz; do
+  echo $R1
+  R2=${R1/_R1_001.fastq.gz/_R2_001.fastq.gz}
+  if [ ! -f $R2 ]; then echo R2 $R2 not found! stop; exit 1; fi
+  #Change NAME line per experiment - all should be unique
+  NAME=$(basename $R1 | cut -d _ -f 1-4)
+  OPUT=${BASE}/$NAME/$NAME
+  mkdir -p $(dirname $OPUT)
+  echo R1 is $R1
+  echo R2 is $R2
+  echo NAME is $NAME
+  echo OUTPUT is $OPUT
+  cmd="src/atac.sh $GEN $R1 $R2 $IDX $OPUT"
+  sub="sbatch --chdir=$(pwd) --nodes=1 --ntasks=4 --mem=10G --time=10:00:00 --job-name=atac_${NAME} --output=${OPUT}.pipeline.out --error=${OPUT}.pipeline.error"
+  echo $cmd
+  $sub $cmd
+done
+
+exit 0
 R1=/slipstream/home/conggao/ATAC_seq/ATAC_andy/Stein_AF_10AATAC_iLabs_15077_092030/10Ar2_008/10Ar2_008_Ad2_8_S3_L002_R1_001.fastq.gz
 R2=/slipstream/home/conggao/ATAC_seq/ATAC_andy/Stein_AF_10AATAC_iLabs_15077_092030/10Ar2_008/10Ar2_008_Ad2_8_S3_L002_R2_001.fastq.gz
 OPUT=${BASE}/MCF10A_rep2/MCF10A_rep2

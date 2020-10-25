@@ -45,9 +45,11 @@ Miniconda3-latest-Linux-x86_64.sh.2
 hs_err_pid33748.log
 igv.log
 output_*
+input_*
 
 tmp*
 *.sh.*
 *.pos
 
+core.*
 
