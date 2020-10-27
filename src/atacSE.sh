@@ -68,13 +68,14 @@ fi
 # Delete pseudo-replicates
 #rm ${OUTP}.pseudorep1.bam ${OUTP}.pseudorep1.bam.bai ${OUTP}.pseudorep2.bam ${OUTP}.pseudorep2.bam.bai
 
+# SE footprinting NYI - Alfred doesn't detect footprints in SE
 # Footprints
-echo STEP 4 - footprints
-if [ ! -f ${OUTP}.footprints.motifs ]  || [ $RESUME -le 4 ]; then
-  ${BASEDIR}/footprints.sh ${ATYPE} ${HG} ${OUTP}.final.bam ${OUTP}
-else
-  echo ${OUTP}.footprints.motifs found! skipping footprints.
-fi
+#echo STEP 4 - footprints
+#if [ ! -f ${OUTP}.footprints.motifs ]  || [ $RESUME -le 4 ]; then
+#  ${BASEDIR}/footprints.sh ${ATYPE} ${HG} ${OUTP}.final.bam ${OUTP}
+#else
+#  echo ${OUTP}.footprints.motifs found! skipping footprints.
+#fi
 
 echo STEP 5 - qc metrics
 # Aggregate key QC metrics
@@ -109,7 +110,7 @@ else
 fi
 
 echo STEP 9 - bigwigs abd bigbeds
-for f in ${OUTP}.bedGraph.gz ${OUTP}.footprint.bedGraph.gz; do
+for f in ${OUTP}.bedGraph.gz; do # ${OUTP}.footprint.bedGraph.gz; do
   if [ ! -f ${f/bedGraph.gz/bw} ]  || [ $RESUME -le 9 ]; then
     bash ${BASEDIR}/bedgraphgz_to_bigwig.sh ${ATYPE} $f .bedGraph.gz
   fi
