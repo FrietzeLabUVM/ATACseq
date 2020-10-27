@@ -71,11 +71,11 @@ if args.prefix:
     filename = args.prefix + ".unfiltered.peaks.gz"
     if os.path.isfile(filename):
         qc['UnfilteredPeaks'] = str(linecount(filename))
-        filename = args.prefix + ".peaks"
+        filename = args.prefix + ".final.peaks"
         if os.path.isfile(filename):
             qc['FilteredPeaks'] = str(linecount(filename))
             qc['FractionPeaksRetained'] = str(float(qc['FilteredPeaks'])/float(qc['UnfilteredPeaks']))
-    filename = args.prefix + ".peaks.log"
+    filename = args.prefix + ".final.peaks.log"
     if os.path.isfile(filename):
         with open(filename, 'r') as f:
             f_reader = csv.DictReader(f, delimiter="\t")

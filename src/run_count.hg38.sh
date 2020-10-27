@@ -1,11 +1,5 @@
 #!/bin/bash
 OUT_DIR=$1
-
-if [ ! -f src/count.sh ]; then
-  echo must run from directory containing src/count.sh! exit
-  exit 1
-fi
-
 if [ -z $OUT_DIR ]; then
   echo need OUT_DIR as arg1. exit.
   exit 1

@@ -36,7 +36,7 @@ samtools merge -@ ${THREADS} ${OUTP}.merge.bam ${REP1} ${REP2}
 samtools index -@ ${THREADS} ${OUTP}.merge.bam
 
 # Estimate insert size
-ISIZE=`samtools view -f 2 -F 3852 ${OUTP}.merge.bam | awk '$9>length($10)' | cut -f 9 | head -n 1000000 | awk '{SUM+=$1} END {print int(SUM/NR);}'`
+#ISIZE=`samtools view -f 2 -F 3852 ${OUTP}.merge.bam | awk '$9>length($10)' | cut -f 9 | head -n 1000000 | awk '{SUM+=$1} END {print int(SUM/NR);}'`
 
 # call peaks on replicates and merged BAM
 conda deactivate
@@ -44,8 +44,7 @@ conda activate ${BASEDIR}/../bin/envs/atac2
 for PEAKBAM in ${OUTP}.merge.bam ${REP1} ${REP2}
 do
     PEAKN=${PEAKBAM}.suf
-    macs2 callpeak -g $G --nomodel --keep-dup all -p 0.01 --shift 0 --extsize ${ISIZE} -n ${PEAKN} -t ${PEAKBAM}
-    #macs2 callpeak -g $G --nomodel --keep-dup all -p 0.01 --shift 0 --extsize ${ISIZE} -n ${PEAKN} -t ${PEAKBAM} -f BAMPE
+    macs2 callpeak -g $G --keep-dup all -p 0.01 --shift 0 -n ${PEAKN} -t ${PEAKBAM} -f BAM
     #rm ${PEAKN}_summits.bed ${PEAKN}_peaks.xls
 done
 conda deactivate
