@@ -16,7 +16,7 @@ all:   	$(TARGETS)
 	conda create -p bin/envs/atac --file atac.env.txt && conda create -p bin/envs/atac2 --file atac2.env.txt
 
 .homer: .conda .channels .envs
-	export PATH=${PBASE}/bin/bin:${PATH} && source activate ${PBASE}/bin/envs/atac2 && perl ${PBASE}/bin/envs/atac2/share/homer-4.9.1-6/configureHomer.pl -install hg19 && source deactivate && touch .homer
+	export PATH=${PBASE}/bin/bin:${PATH} && source activate ${PBASE}/bin/envs/atac2 && perl ${PBASE}/bin/envs/atac2/share/homer-4.9.1-6/configureHomer.pl -install hg19 && perl ${PBASE}/bin/envs/atac2/share/homer-4.9.1-6/configureHomer.pl -install hg38 && perl ${PBASE}/bin/envs/atac2/share/homer-4.9.1-6/configureHomer.pl -install mm10 && source deactivate && touch .homer
 
 clean:
 	rm -rf $(TARGETS) $(TARGETS:=.o) bin/
