@@ -5,6 +5,8 @@ Some misc additions like bigWig generation added too.
 ATAC-Seq Pipeline Installation
 ------------------------------
 
+Create a directory where you'd like to install this pipeline and cd into it.
+
 `git clone https://github.com/FrietzeLabUVM/ATACseq.git`
 
 `cd ATACseq`
